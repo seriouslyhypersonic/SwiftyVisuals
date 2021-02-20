@@ -24,16 +24,28 @@ public struct BlurView: UIViewRepresentable {
 
 struct BlurView_Previews: PreviewProvider {
     static var previews: some View {
-        ZStack {
-            LinearGradient.purpleToGreenDiagonally
-                .ignoresSafeArea()
-            Text("SwiftUI")
-                .font(.system(size: 100, weight: .black))
-                .foregroundColor(.white)
-                .rotationEffect(.degrees(-45))
-            BlurView(style: .systemUltraThinMaterial)
-                .frame(width: Screen.width * 0.9, height: 350)
-                .cornerRadius(25)
+        Background() {
+            ZStack {
+                Text(loremIpsum)
+                    .font(Font.title.bold())
+                    .foregroundColor(.white)
+                
+                BlurView(style: .systemUltraThinMaterial)
+                    .frame(height: 375)
+                    .cornerRadius(25)
+            }
+            .padding(.horizontal, 25)
         }
     }
+    
+    static let loremIpsum =
+    """
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus placerat nunc, ut \
+    ultrices est. Praesent arcu purus, gravida vitae nisl eu, tristique volutpat leo. Nulla quis \
+    sodales enim. Curabitur rhoncus congue ligula, a pellentesque libero convallis in. Nunc \
+    eleifend venenatis varius. Quisque gravida commodo elit, eu tempor diam commodo in. Duis eu \
+    nisi leo.
+    """
 }
+
+

@@ -23,11 +23,6 @@ class ScrollState: ObservableObject {
     static let animation = Animation.easeInOut(duration: duration)
 }
 
-protocol ContextMenuProvider {
-    associatedtype MenuItemsView: View
-    var menuItems: MenuItemsView { get }
-}
-
 let scrollViewContentTag = "ScrollViewContent"
 let scrollViewContentCoordinateSpace = CoordinateSpace.named(scrollViewContentTag)
 
@@ -35,7 +30,7 @@ let scrollViewFrameTag = "ScrollViewFrame"
 let scrollViewFrameCoordinateSpace = CoordinateSpace.named(scrollViewFrameTag)
 
 /// A container that presents data items in single column format
-struct ListView<Content>: View where Content: View {
+public struct ListView<Content>: View where Content: View {
     private var cells: [Cell]
     
     var onDelete: ((IndexSet) -> Void)? = nil
@@ -66,7 +61,7 @@ struct ListView<Content>: View where Content: View {
         self._scrollTarget = scrollTarget
     }
     
-    var body: some View {
+    public var body: some View {
         ScrollViewReader { scrollViewProxy in
             GeometryReader { scrolViewGeometry in
                 TrackableScrollView(
@@ -127,7 +122,7 @@ struct ListView<Content>: View where Content: View {
             scrollViewProxy: scrollViewProxy,
             scrollViewGeometry: scrollViewGeometry)
         
-        withAnimation(snappyAnimation) {
+        withAnimation(.snappyAnimation) {
             slideCell(draggedViewModel: draggedViewModel)
         }
     }
@@ -207,7 +202,7 @@ struct ListView<Content>: View where Content: View {
         
         print("matched: \(matchedID)")
         
-        withAnimation(springyAnimation) {
+        withAnimation(.springyAnimation) {
             onMove?(
                 IndexSet(integer: cellIndex),
                 matchedIndex > cellIndex ? matchedIndex + 1 : matchedIndex

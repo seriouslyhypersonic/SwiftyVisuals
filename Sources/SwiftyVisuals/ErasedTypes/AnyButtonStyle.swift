@@ -13,27 +13,27 @@ import SwiftUI
 //}
 
 /// A type erased `PrimitiveButtonStyle`
-struct AnyPrimitiveButtonStyle: PrimitiveButtonStyle {
+public struct AnyPrimitiveButtonStyle: PrimitiveButtonStyle {
     private let _makeBody: (Configuration) -> AnyView
     
-    init<Style: PrimitiveButtonStyle>(_ style: Style) {
+    public init<Style: PrimitiveButtonStyle>(_ style: Style) {
         self._makeBody = { style.makeBody(configuration: $0).eraseToAnyView() }
     }
     
-    func makeBody(configuration: Configuration) -> AnyView {
+    public func makeBody(configuration: Configuration) -> AnyView {
         return _makeBody(configuration)
     }
 }
 
 /// A type erased `ButtonStyle`
-struct AnyButtonStyle: ButtonStyle {
+public struct AnyButtonStyle: ButtonStyle {
     private let _makeBody: (Configuration) -> AnyView
     
-    init<Style: ButtonStyle>(_ style: Style) {
+    public init<Style: ButtonStyle>(_ style: Style) {
         self._makeBody = { style.makeBody(configuration: $0).eraseToAnyView() }
     }
     
-    func makeBody(configuration: Configuration) -> AnyView {
+    public func makeBody(configuration: Configuration) -> AnyView {
         return _makeBody(configuration)
     }
 }

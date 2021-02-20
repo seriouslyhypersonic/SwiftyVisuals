@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// MARK: - View Alignment Modifier
-
 struct TopView: ViewModifier {
     func body(content: Content) -> some View {
         VStack(spacing: 0) {
@@ -45,7 +43,7 @@ struct TrailingView: ViewModifier {
     }
 }
 
-enum AlignmentGuide {
+public enum AlignmentGuide {
     case top, bottom
     case leading, trailing
     case topLeading, topTrailing

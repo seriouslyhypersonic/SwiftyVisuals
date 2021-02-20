@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension View {
+public extension View {
     /// Align a child view inside its parent using the provided alignment guide
     /// - Parameter alignment: the alignment guide used to position the child inside its parent view
     /// - Returns: the child view embbeded in a `HStack` and/or `VStack` according to the alignment guide.

@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// A view that presents symbols appropriate for delete actions
-struct DeleteButtonLabel: View {
+public struct DeleteButtonLabel: View {
     let symbol: DeleteSymbol
     let font: Font
     
@@ -17,7 +17,7 @@ struct DeleteButtonLabel: View {
         self.font = font
     }
     
-    var body: some View {
+    public var body: some View {
         Image(systemName: symbol.rawValue)
             .font(font)
             .padding(symbolPadding)
@@ -30,7 +30,7 @@ struct DeleteButtonLabel: View {
         }
     }
     
-    enum DeleteSymbol: String {
+    public enum DeleteSymbol: String {
         case minus = "minus"
         case minusCircle = "minus.circle"
         case minusCircleFill = "minus.circle.fill"

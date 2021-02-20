@@ -12,7 +12,7 @@ public struct Background<BackgroundView: View, ForegroundView: View>: View {
     let background: () -> BackgroundView
     let foreground: () -> ForegroundView
     
-    init(_ background: @escaping () -> BackgroundView, foreground: @escaping () -> ForegroundView ) {
+    public init(_ background: @escaping () -> BackgroundView, foreground: @escaping () -> ForegroundView ) {
         self.background = background
         self.foreground = foreground
     }

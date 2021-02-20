@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension View {
+public extension View {
     /// Embbed the current view in a Cell
     /// - Parameter id: the cell id
     /// - Returns: the current view embbeded in a Cell or a `self` if the view is already a Cell

@@ -7,15 +7,6 @@
 
 import SwiftUI
 
-let springyAnimation = Animation.interpolatingSpring(
-    mass: 0.75,
-    stiffness: 150.0,
-    damping: 12,
-    initialVelocity: 10
-)
-
-let snappyAnimation = Animation.easeInOut(duration: 0.15)
-
 struct CellDrag: Equatable {
     /// Drag location in the ScrollView content coordinate space
     let location: CGPoint
@@ -95,8 +86,8 @@ struct CellDisplayer: View, Identifiable {
             .onChange(of: dragState, perform: updateZIndex)
             .onChange(of: viewModel.cellDrag) { _ in if dragState.isDragging { onDrag?(viewModel) } }
             .onChange(of: canJiggle, perform: toggleJiggleEffect)
-            .animation(springyAnimation, value: appearance)
-            .animation(dragState.isActive ? nil : springyAnimation, value: dragState)
+            .animation(.springyAnimation, value: appearance)
+            .animation(dragState.isActive ? nil : .springyAnimation, value: dragState)
             .onAppear { appendToModels(viewModel) }
             .onDisappear { removeFromModels(viewModel) }
             .saveBounds(in: $viewModel.frame, coordinateSpace: scrollViewContentCoordinateSpace)
@@ -208,13 +199,13 @@ struct CellDisplayer: View, Identifiable {
     
     func startCellDragging() {
         viewModel.isDragging = true
-        withAnimation(snappyAnimation) { shadowRadius = configuration.shadowRadius ?? 0 }
+        withAnimation(.snappyAnimation) { shadowRadius = configuration.shadowRadius ?? 0 }
     }
     
     func stopCellDragging() {
         viewModel.isDragging = false
         viewModel.cellDrag = nil
-        withAnimation(snappyAnimation) { shadowRadius = 0 }
+        withAnimation(.snappyAnimation) { shadowRadius = 0 }
     }
     
     func toggleJiggleEffect(canJigle: Bool) {

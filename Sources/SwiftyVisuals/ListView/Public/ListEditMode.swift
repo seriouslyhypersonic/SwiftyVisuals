@@ -7,14 +7,15 @@
 
 import SwiftUI
 
-class ListEditMode: ObservableObject {
+/// The editing state of a `ListView`
+public final class ListEditMode: ObservableObject {
     @Published private(set) var isActive: Bool
     @Published private(set) var modelID = UUID()
     @Published var contentOffset: CGFloat = 0
     
-    func activate() { isActive = true }
-    func dismiss() { isActive = false }
-    func toggle() { isActive.toggle() }
+    public func activate() { isActive = true }
+    public func dismiss() { isActive = false }
+    public func toggle() { isActive.toggle() }
     
     init(_ isEditing: Bool = false) {
         self.isActive = isEditing

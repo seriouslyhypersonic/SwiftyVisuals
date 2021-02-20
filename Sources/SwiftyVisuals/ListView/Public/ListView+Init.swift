@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension ListView {
+public extension ListView {
     // MARK: - Collection of Cells
     init<Data>(
         _ cells: Data,
@@ -38,7 +38,7 @@ extension ListView {
     
     
     // MARK: - Hashable Data
-    public init<Data, ID>(
+    init<Data, ID>(
         _ data: Data,
         id: KeyPath<Data.Element, ID>,
         contentOffset: Binding<CGFloat> = .constant(0),

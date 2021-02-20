@@ -44,7 +44,7 @@ struct EditModeDismissButton: View {
     }
 }
 
-// Mark: - EditModeDismissButton.Configuration
+// MARK: - EditModeDismissButton.Configuration
 extension EditModeDismissButton {
     struct Configuration {
         var onDismiss: ((ListEditMode) -> Void)? = nil

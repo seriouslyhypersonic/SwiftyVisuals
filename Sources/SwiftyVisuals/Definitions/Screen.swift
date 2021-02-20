@@ -19,8 +19,8 @@ public struct Screen {
     public static let bounds = UIScreen.main.bounds
     
     /// The width of the device's screen
-    public static let width: CGFloat { bounds.width }
+    public static var width: CGFloat { bounds.width }
     
     /// The height of the device's screen
-    public static let heigth: CGFloat { bounds.height }
+    public static var heigth: CGFloat { bounds.height }
 }

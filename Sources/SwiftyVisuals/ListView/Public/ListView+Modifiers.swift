@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension ListView {
+public extension ListView {
     /// Set the deletion action for the `ListView`
     /// - Parameters:
     ///   - action: the action that you want `ListView` to perform when elements in the view are deleted. The `ListView`

@@ -11,7 +11,7 @@ import SwiftUI
 public struct AnyShape: Shape {
     let _path: (CGRect) -> Path
     
-    init<S: Shape>(_ shape: S) {
+    public init<S: Shape>(_ shape: S) {
         self._path = shape.path
     }
     

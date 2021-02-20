@@ -8,12 +8,12 @@
 import SwiftUI
 
 /// A conteiner for views presented in a ´ListView´
-struct Cell: View, Hashable, Identifiable, Equatable {
+public struct Cell: View, Hashable, Identifiable, Equatable {
     let view: AnyView
     let menuItems: AnyView?
-    let id: AnyHashable
+    public let id: AnyHashable
     
-    var body: some View {
+    public var body: some View {
         view
     }
     
@@ -32,11 +32,11 @@ struct Cell: View, Hashable, Identifiable, Equatable {
         self.id = id
     }
     
-    static func == (lhs: Cell, rhs: Cell) -> Bool {
+    public static func == (lhs: Cell, rhs: Cell) -> Bool {
         lhs.id == rhs.id
     }
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }
