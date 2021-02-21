@@ -15,6 +15,11 @@ public struct JiggleEffect: GeometryEffect {
         set { angle = newValue }
     }
     
+    public init(amplitude: Angle, angle: Angle) {
+        self.amplitude = amplitude.radians
+        self.angle = angle.radians
+    }
+    
     public func effectValue(size: CGSize) -> ProjectionTransform {
         let rotation = amplitude / 2 * sin( 2 * .pi / amplitude * angle)
         

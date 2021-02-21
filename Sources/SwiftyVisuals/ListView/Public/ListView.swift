@@ -31,18 +31,16 @@ let scrollViewFrameCoordinateSpace = CoordinateSpace.named(scrollViewFrameTag)
 
 /// A container that presents data items in single column format
 public struct ListView<Content>: View where Content: View {
-    private var cells: [Cell]
-    
-    var onDelete: ((IndexSet) -> Void)? = nil
-    var onMove: ((IndexSet, Int) -> Void)? = nil
-    
+    // ListView parameters
+    var cells: [Cell]
     var configuration = ListAppearance.Configuration()
-    
-    var editModeOnActivate: ((ListEditMode) -> Void)? = nil
     var editButtonConfiguration = EditModeDismissButton.Configuration()
-    var deleteButtonConfiguration = DeleteButton.Configuration()
-    
-    var editingClipShape: AnyShape = .init(Rectangle())
+
+    // CellDisplayer parameters
+    var onMove: ((IndexSet, Int) -> Void)? = nil
+    var onDelete: ((IndexSet) -> Void)? = nil
+    var editModeOnActivate: ((ListEditMode) -> Void)? = nil
+    var cellDisplayerConfiguration = CellDisplayer.Configuration()
     
     @Binding var contentOffset: CGFloat
     @Binding var scrollTarget: AnyHashable?
@@ -106,6 +104,12 @@ public struct ListView<Content>: View where Content: View {
             }
             .onAppear { scrollState.proxy = scrollViewProxy }
         }
+    }
+    
+    var appearance: ListAppearance {
+        editMode.isActive
+            ? .editing(configuration: configuration)
+            : .normal(configuration: configuration)
     }
     
     func deleteCell(id: AnyHashable) {
@@ -209,16 +213,6 @@ public struct ListView<Content>: View where Content: View {
             )
             models.forEach { $0.slideOffset = 0 }
         }
-    }
-    
-    var appearance: ListAppearance {
-        editMode.isActive
-            ? .editing(configuration: configuration)
-            : .normal(configuration: configuration)
-    }
-    
-    var cellDisplayerConfiguration: CellDisplayer.Configuration {
-        .init(deleteButtonConfiguration: deleteButtonConfiguration, editingClipShape: editingClipShape)
     }
 }
 

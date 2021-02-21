@@ -81,7 +81,7 @@ struct CellDisplayer: View, Identifiable {
             .offset(x: 0, y: dragState.isDragging ? dragState.translation.height + dragOffset : 0)
             .offset(x: 0, y: viewModel.slideOffset)
             .scaleEffect(appearance.scale)
-            .jiggleEffect(amplitude: configuration.jiggleAmplitude.radians, angle: jiggleAngle.radians)
+            .jiggleEffect(amplitude: configuration.jiggleAmplitude, angle: jiggleAngle)
             .zIndex(zIndex)
             .onChange(of: dragState, perform: updateZIndex)
             .onChange(of: viewModel.cellDrag) { _ in if dragState.isDragging { onDrag?(viewModel) } }
@@ -210,96 +210,21 @@ struct CellDisplayer: View, Identifiable {
     
     func toggleJiggleEffect(canJigle: Bool) {
         withAnimation( canJiggle
-                        ? Configuration.Animation.jiggleOn.delay(.random(in: 0...0.3)) // Unsynched jiggling
-                        : Configuration.Animation.jiggleOff)
+                        ? configuration.jiggleAnimation.on.delay(.random(in: 0...0.3)) // Unsynched jiggling
+                        : configuration.jiggleAnimation.off)
         {
             jiggleAngle = canJiggle ? configuration.jiggleAmplitude : .zero
         }
     }
 }
 
-// MARK: - View Model
-extension CellDisplayer {
-    // MUST PROVIDE ID ON APPEAR, OTHERWISE ALL VIEW MODELS WILL BE EQUAL!
-    class ViewModel: ObservableObject, Identifiable, Equatable {
-        @Published var frame: CGRect = .zero
-        @Published var slideOffset: CGFloat = 0
-        
-        @Published var cellDrag: CellDrag? = nil
-        @Published var isDragging = false
-        
-        var id: AnyHashable = 0
-        var slidFrame: CGRect { frame.offsetBy(dx: 0, dy: slideOffset) }
-        
-        static func == (lhs: CellDisplayer.ViewModel, rhs: CellDisplayer.ViewModel) -> Bool {
-            lhs.id == rhs.id
-        }
-    }
-}
-
-// MARK: - CelllDisplayer.Configuration
-extension CellDisplayer {
-    struct Configuration {
-        var deleteButtonConfiguration: DeleteButton.Configuration
-        var editingClipShape: AnyShape
-        var shadowRadius: CGFloat? = 15
-        var jiggleAmplitude: Angle = .degrees(2)
-        
-        static let draggingScale: CGFloat = 1.075
-        
-        struct PressToDrag {
-            static let minimumDuration: Double = 0.10
-            static let maximumDistance: CGFloat = 500
-            static let minimumDistance: CGFloat = 0
-        }
-        
-        struct Animation {
-            static let jiggleOn = SwiftUI.Animation.linear(duration: 0.35).repeatForever(autoreverses: false)
-            static let jiggleOff = SwiftUI.Animation.easeInOut(duration: 0.10)
-        }
-    }
-}
-
-fileprivate extension CellDisplayer.Configuration {
-    static var dummy: Self {
-        .init(deleteButtonConfiguration: .init(), editingClipShape: AnyShape(Rectangle()))
-    }
-}
-
-// MARK: - Appearance
-extension CellDisplayer {
-    enum Appearance: Equatable {
-        case normal, editing(clipShape: AnyShape), dragging(clipShape: AnyShape)
-        
-        var scale: CGFloat {
-            switch self {
-            case .dragging: return Configuration.draggingScale
-            default: return 1
-            }
-        }
-        
-        var clipShape: AnyShape {
-            switch self {
-            case .normal: return AnyShape(Rectangle())
-            case .editing(let clipShape): return clipShape
-            case .dragging(let clipShape): return clipShape
-            }
-        }
-        
-        static func == (lhs: CellDisplayer.Appearance, rhs: CellDisplayer.Appearance) -> Bool {
-            switch (lhs, rhs) {
-            case (.normal, .normal): return true
-            case (.editing, .editing): return true
-            case (.dragging, .dragging): return true
-            default: return false
-            }
-        }
-    }
-}
-
 struct Cell_Previews: PreviewProvider {
+    static let configuration = CellDisplayer.Configuration(
+        deleteButtonConfiguration: .init(),
+        editingClipShape: AnyShape(Rectangle()))
+    
     static var previews: some View {
-        CellDisplayer(configuration: CellDisplayer.Configuration.dummy, models: .constant([])) {
+        CellDisplayer(configuration: configuration, models: .constant([])) {
             Examples.TextCell(viewModel: .init("Hello, World")).toCell()
         }
         .environmentObject(ListEditMode(false))

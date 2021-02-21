@@ -65,7 +65,7 @@ public extension ListView {
     }
     
     func editMode<ClipShape: Shape>(clipShape:ClipShape) -> Self {
-        modify(\.editingClipShape, value: AnyShape(clipShape))
+        modify(\.cellDisplayerConfiguration.editingClipShape, value: AnyShape(clipShape))
     }
     
     func editButton<Label: View, Style: ButtonStyle>(
@@ -106,6 +106,15 @@ public extension ListView {
         modify(\.editButtonConfiguration.style, value: .init(AnyPrimitiveButtonStyle(style)))
     }
     
+    func jiggleEffect(amplitude: Angle = .degrees(2), duration: Double = 0.35) -> Self {
+        self.modify(\.cellDisplayerConfiguration.jiggleAmplitude, value: amplitude)
+            .modify(\.cellDisplayerConfiguration.jiggleAnimation.duration, value: duration)
+    }
+    
+    func jiggleEffect(_ isActive: Bool = true) -> Self {
+        self.jiggleEffect(amplitude: isActive ? .degrees(2) : .zero)
+    }
+    
     // MARK: - Delete Button
     
     func deleteButton<Label: View, S: ButtonStyle>(
@@ -115,8 +124,8 @@ public extension ListView {
         @ViewBuilder label: @escaping () -> Label) -> Self
     {
         var list = self
-            .modify(\.deleteButtonConfiguration.label, value: label().eraseToAnyView())
-            .modify(\.deleteButtonConfiguration.alignmentGuide, value: alignment)
+            .modify(\.cellDisplayerConfiguration.deleteButtonConfiguration.label, value: label().eraseToAnyView())
+            .modify(\.cellDisplayerConfiguration.deleteButtonConfiguration.alignmentGuide, value: alignment)
             
         if let style = style {
             list = list.deleteButton(style: style)
@@ -142,23 +151,23 @@ public extension ListView {
     }
     
     func deleteButtonOffset(x: CGFloat, y: CGFloat) -> Self {
-        self.modify(\.deleteButtonConfiguration.xOffset, value: x)
-            .modify(\.deleteButtonConfiguration.yOffset, value: y)
+        self.modify(\.cellDisplayerConfiguration.deleteButtonConfiguration.xOffset, value: x)
+            .modify(\.cellDisplayerConfiguration.deleteButtonConfiguration.yOffset, value: y)
     }
     
     func deleteButton(alignment: AlignmentGuide) -> Self {
-        modify(\.deleteButtonConfiguration.alignmentGuide, value: alignment)
+        modify(\.cellDisplayerConfiguration.deleteButtonConfiguration.alignmentGuide, value: alignment)
     }
     
     func deleteButton<Style: ButtonStyle>(style: Style) -> Self {
-        modify(\.deleteButtonConfiguration.style, value: .init(AnyButtonStyle(style)))
+        modify(\.cellDisplayerConfiguration.deleteButtonConfiguration.style, value: .init(AnyButtonStyle(style)))
     }
     
     func deleteButton<Style: PrimitiveButtonStyle>(style: Style) -> Self {
-        modify(\.deleteButtonConfiguration.style, value: .init(AnyPrimitiveButtonStyle(style)))
+        modify(\.cellDisplayerConfiguration.deleteButtonConfiguration.style, value: .init(AnyPrimitiveButtonStyle(style)))
     }
     
     func deleteButton(transition: AnyTransition) -> Self {
-        modify(\.deleteButtonConfiguration.transition, value: transition)
+        modify(\.cellDisplayerConfiguration.deleteButtonConfiguration.transition, value: transition)
     }
 }

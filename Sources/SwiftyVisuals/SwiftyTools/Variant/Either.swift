@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// A variant type that at any given type stores only one non-nil value of two possible types
+/// A variant type that at any given time stores only one non-nil value of two possible types
 struct Either<First, Second> {
     private(set) var first: First?
     private(set) var second: Second?
