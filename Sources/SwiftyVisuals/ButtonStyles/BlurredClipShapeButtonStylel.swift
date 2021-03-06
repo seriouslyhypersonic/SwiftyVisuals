@@ -26,9 +26,9 @@ fileprivate func clipAndBlur<Label: View, ClipShape: Shape>(
     clipShape: ClipShape) -> some View
 {
     label
-        .foregroundColor(.primary)
+        .foregroundColor(Color.primary.opacity(0.65))
         .padding(padding)
-        .background(BlurView(style: style))
+        .background(Blur(style: style))
         .overlay(Color.primary.opacity(configuration.isPressed ? 0.5 : 0))
         .clipShape(clipShape)
 }

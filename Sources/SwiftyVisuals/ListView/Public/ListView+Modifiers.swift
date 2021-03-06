@@ -46,6 +46,10 @@ public extension ListView {
         modify(\.configuration.spacing, value: spacing)
     }
     
+    func fixedHeader(_ hasFixedHeader: Bool = true) -> Self {
+        modify(\.configuration.hasFixedHeader, value: hasFixedHeader)
+    }
+    
     // MARK: - Edit Mode
     
     func editMode(
@@ -65,14 +69,14 @@ public extension ListView {
     }
     
     func editMode<ClipShape: Shape>(clipShape:ClipShape) -> Self {
-        modify(\.cellDisplayerConfiguration.editingClipShape, value: AnyShape(clipShape))
+        modify(\.cellDisplayerConfiguration.editingClipShape, value: clipShape.eraseToAnyShape())
     }
     
     func editButton<Label: View, Style: ButtonStyle>(
         alignment: AlignmentGuide = .topLeading,
         style: Style? = nil,
         transition: AnyTransition? = nil,
-        @ViewBuilder label: @escaping () -> Label) -> Self
+        @ViewBuilder label: @escaping () -> Label ) -> Self
     {
         var list = self
             .modify(\.editButtonConfiguration.label, value: label().eraseToAnyView())
@@ -106,19 +110,15 @@ public extension ListView {
         modify(\.editButtonConfiguration.style, value: .init(AnyPrimitiveButtonStyle(style)))
     }
     
-    func jiggleEffect(amplitude: Angle = .degrees(2), duration: Double = 0.35) -> Self {
-        self.modify(\.cellDisplayerConfiguration.jiggleAmplitude, value: amplitude)
+    func editMode(jiggleEffect: Bool, amplitude: Angle = .degrees(2), duration: Double = 0.35) -> Self {
+        self.modify(\.cellDisplayerConfiguration.jiggleAmplitude, value: jiggleEffect ? amplitude : .zero)
             .modify(\.cellDisplayerConfiguration.jiggleAnimation.duration, value: duration)
-    }
-    
-    func jiggleEffect(_ isActive: Bool = true) -> Self {
-        self.jiggleEffect(amplitude: isActive ? .degrees(2) : .zero)
     }
     
     // MARK: - Delete Button
     
     func deleteButton<Label: View, S: ButtonStyle>(
-        alignment: AlignmentGuide = .topTrailing,
+        alignment: AlignmentGuide = .topLeading,
         style: S? = nil,
         transition: AnyTransition? = nil,
         @ViewBuilder label: @escaping () -> Label) -> Self
@@ -141,7 +141,7 @@ public extension ListView {
     func deleteButton<Style: ButtonStyle>(
         symbol: DeleteButtonLabel.DeleteSymbol,
         font: Font = .title2,
-        alignment: AlignmentGuide = .topTrailing,
+        alignment: AlignmentGuide = .topLeading,
         style: Style? = nil,
         transition: AnyTransition? = nil) -> Self
     {

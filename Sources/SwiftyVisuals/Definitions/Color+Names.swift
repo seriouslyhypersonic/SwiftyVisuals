@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension Color {
+public extension Color {
     static var blueDark: Self { .init(#colorLiteral(red: 0, green: 0.2411715931, blue: 0.5, alpha: 1)) }
     static var blueNavy: Self { .init(#colorLiteral(red: 0.1495475709, green: 0.4320426375, blue: 0.7392980456, alpha: 1)) }
     static var blueLight: Self { .init(#colorLiteral(red: 0.235713382, green: 0.5994845672, blue: 0.9228323096, alpha: 1)) }

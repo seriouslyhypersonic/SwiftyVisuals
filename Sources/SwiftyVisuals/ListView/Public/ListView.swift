@@ -77,7 +77,7 @@ public struct ListView<Content>: View where Content: View {
                                 onDrop: cellDropped,
                                 onActivate: editModeOnActivate,
                                 onDelete: deleteCell,
-                                configuration: cellDisplayerConfiguration,
+                                configuration: cellDisplayerConfiguration(for: cell.id),
                                 models: $models)
                             {
                                 cell
@@ -112,6 +112,16 @@ public struct ListView<Content>: View where Content: View {
             : .normal(configuration: configuration)
     }
     
+    func cellDisplayerConfiguration(for id: AnyHashable) -> CellDisplayer.Configuration {
+        var currentCellDisplayerConfiguration = cellDisplayerConfiguration
+        
+        if configuration.hasFixedHeader && id == cells.first?.id {
+            currentCellDisplayerConfiguration.isHeader = true
+        }
+        
+        return currentCellDisplayerConfiguration
+    }
+    
     func deleteCell(id: AnyHashable) {
         onDelete?(IndexSet(integer: cells.firstIndex { $0.id == id }! ))
     }
@@ -126,7 +136,7 @@ public struct ListView<Content>: View where Content: View {
             scrollViewProxy: scrollViewProxy,
             scrollViewGeometry: scrollViewGeometry)
         
-        withAnimation(.snappyAnimation) {
+        withAnimation(.fastInout) {
             slideCell(draggedViewModel: draggedViewModel)
         }
     }
@@ -169,6 +179,7 @@ public struct ListView<Content>: View where Content: View {
         switch cellDrag.direction {
         case .down:
             models.forEach {
+                guard !isHeader(id: $0.id) else { return }
                 if $0.frame.isBelow(draggedViewModel.frame) {
                     $0.slideOffset =
                         $0.slidFrame.isAbove(cellDrag.location) ? -slideDistance : 0
@@ -178,6 +189,7 @@ public struct ListView<Content>: View where Content: View {
             }
         case .up:
             models.forEach {
+                guard !isHeader(id: $0.id) else { return }
                 if $0.frame.isAbove(draggedViewModel.frame) {
                     $0.slideOffset =
                         $0.slidFrame.isBelow(cellDrag.location) ? slideDistance : 0
@@ -187,6 +199,10 @@ public struct ListView<Content>: View where Content: View {
             }
         }
         
+    }
+    
+    func isHeader(id: AnyHashable) -> Bool {
+        configuration.hasFixedHeader && id == cells.first?.id
     }
     
     func cellDropped(cellDrag: CellDrag?, draggedViewModel: CellDisplayer.ViewModel) {
@@ -206,7 +222,7 @@ public struct ListView<Content>: View where Content: View {
         
         print("matched: \(matchedID)")
         
-        withAnimation(.springyAnimation) {
+        withAnimation(.springy) {
             onMove?(
                 IndexSet(integer: cellIndex),
                 matchedIndex > cellIndex ? matchedIndex + 1 : matchedIndex

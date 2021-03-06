@@ -9,11 +9,13 @@ import SwiftUI
 
 extension CellDisplayer {
     struct Configuration {
+        var isHeader = false
         var deleteButtonConfiguration: DeleteButton.Configuration = .init()
         var editingClipShape: AnyShape = Rectangle().eraseToAnyShape()
         var shadowRadius: CGFloat? = 15
         var jiggleAmplitude: Angle = .zero
         var jiggleAnimation: JiggleAnimation = .init()
+        var editingBackground: AnyView = Blur(style: .systemUltraThinMaterial).eraseToAnyView()
         
         static let draggingScale: CGFloat = 1.075
         

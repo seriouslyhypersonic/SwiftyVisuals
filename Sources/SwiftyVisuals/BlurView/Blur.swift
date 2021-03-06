@@ -6,7 +6,7 @@
 import SwiftUI
 
 /// A SwiftUI wrapper around a `UIVIsualEffectView` where a `UIBlurEffect` is presented
-public struct BlurView: UIViewRepresentable {
+public struct Blur: UIViewRepresentable {
     public typealias UIViewType = UIVisualEffectView
     
     let style: UIBlurEffect.Style
@@ -30,7 +30,7 @@ struct BlurView_Previews: PreviewProvider {
                     .font(Font.title.bold())
                     .foregroundColor(.white)
                 
-                BlurView(style: .systemUltraThinMaterial)
+                Blur(style: .systemUltraThinMaterial)
                     .frame(height: 375)
                     .cornerRadius(25)
             }

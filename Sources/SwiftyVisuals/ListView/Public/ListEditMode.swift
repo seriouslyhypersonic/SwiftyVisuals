@@ -9,7 +9,7 @@ import SwiftUI
 
 /// The editing state of a `ListView`
 public final class ListEditMode: ObservableObject {
-    @Published private(set) var isActive: Bool
+    @Published public private(set) var isActive: Bool
     @Published private(set) var modelID = UUID()
     @Published var contentOffset: CGFloat = 0
     

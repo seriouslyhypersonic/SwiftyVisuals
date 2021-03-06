@@ -20,7 +20,7 @@ extension CellDisplayer {
         
         var clipShape: AnyShape {
             switch self {
-            case .normal: return AnyShape(Rectangle())
+            case .normal: return Rectangle().eraseToAnyShape()
             case .editing(let clipShape): return clipShape
             case .dragging(let clipShape): return clipShape
             }

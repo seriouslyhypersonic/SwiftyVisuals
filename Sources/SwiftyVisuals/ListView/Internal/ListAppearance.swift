@@ -10,7 +10,11 @@ import SwiftUI
 enum ListAppearance {
     struct Configuration {
         var showIndicators: Bool = true
-        var cellTransition: AnyTransition = AnyTransition.scale.combined(with: .slide)
+        var hasFixedHeader: Bool = false
+        var cellTransition: AnyTransition =
+            AnyTransition.scale.combined(
+                with: AnyTransition.asymmetric(insertion: .slide, removal: .move(edge: .leading))
+            )
         var alignment: HorizontalAlignment = .center
         var spacing: CGFloat? = nil
         

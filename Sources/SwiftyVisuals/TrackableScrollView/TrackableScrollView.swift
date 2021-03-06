@@ -10,18 +10,18 @@ public struct TrackableScrollView<Content>: View where Content: View {
     let axes: Axis.Set
     let showIndicators: Bool
     @Binding var contentOffset: CGFloat
-    let content: Content
+    let content: () -> Content
     
-    init(
+    public init(
         _ axes: Axis.Set = .vertical,
         showIndicators: Bool = true,
         contentOffset: Binding<CGFloat>,
-        @ViewBuilder content: () -> Content)
+        @ViewBuilder content: @escaping () -> Content)
     {
         self.axes = axes
         self.showIndicators = showIndicators
         self._contentOffset = contentOffset
-        self.content = content()
+        self.content = content
     }
     
     public var body: some View {
@@ -38,7 +38,7 @@ public struct TrackableScrollView<Content>: View where Content: View {
                                 ]
                             )
                     }
-                    VStack { self.content }
+                    self.content()
                 }
             }
             .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in

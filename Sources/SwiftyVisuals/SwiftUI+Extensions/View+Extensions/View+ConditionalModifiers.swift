@@ -8,7 +8,7 @@
 import SwiftUI
 
 public extension View {
-    /// Conditionally apply a modifier
+    /// Conditionally apply a modifier or return `self`
     @inlinable @ViewBuilder
     func `if`<Transform: View>(_ condition: Bool, transform: (Self) -> Transform ) -> some View {
         if condition {
@@ -33,13 +33,21 @@ public extension View {
         }
     }
     
-    /// Conditionally apply a modifier
+    /// Conditionally apply a modifier or return `self`
     @inlinable @ViewBuilder
-    func ifLet<V, Transform: View>(_ value: V?, transform: (Self, V) -> Transform) -> some View {
+    func ifLet<Value, Transform: View>(_ value: Value?, transform: (Self, Value) -> Transform) -> some View {
         if let value = value {
             transform(self, value)
         } else {
             self
+        }
+    }
+    
+    /// Conditionally apply a modifier or return nothing
+    @inlinable @ViewBuilder
+    func ifLetElseNothing<Value, Transform: View>(_ value: Value?, transform: (Self, Value) -> Transform) -> some View {
+        if let value = value {
+            transform(self, value)
         }
     }
 }

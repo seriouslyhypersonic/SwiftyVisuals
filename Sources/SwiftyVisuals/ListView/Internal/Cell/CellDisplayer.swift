@@ -33,7 +33,7 @@ struct CellDrag: Equatable {
 }
 
 /// A view that manages individual `Cell`s in a `ListView`
-struct CellDisplayer: View, Identifiable {
+struct CellDisplayer: View, Identifiable, ContextMenuProvider {
     @EnvironmentObject var editMode: ListEditMode
     
     @StateObject var viewModel = ViewModel()
@@ -74,23 +74,26 @@ struct CellDisplayer: View, Identifiable {
     
     var body: some View {
         cell
+            .disabled(editMode.isActive)
             .clipShape(appearance.clipShape)
             .contextMenu { menuItems }
-            .background(borderShadow)
-            .overlay(DeleteButton(configuration: configuration.deleteButtonConfiguration))
+            .if(!configuration.isHeader) { view in
+                view.background(editingBackground)
+                    .overlay(DeleteButton(configuration: configuration.deleteButtonConfiguration))
+                    .jiggleEffect(amplitude: configuration.jiggleAmplitude, angle: jiggleAngle)
+            }
             .offset(x: 0, y: dragState.isDragging ? dragState.translation.height + dragOffset : 0)
             .offset(x: 0, y: viewModel.slideOffset)
             .scaleEffect(appearance.scale)
-            .jiggleEffect(amplitude: configuration.jiggleAmplitude, angle: jiggleAngle)
             .zIndex(zIndex)
             .onChange(of: dragState, perform: updateZIndex)
             .onChange(of: viewModel.cellDrag) { _ in if dragState.isDragging { onDrag?(viewModel) } }
             .onChange(of: canJiggle, perform: toggleJiggleEffect)
-            .animation(.springyAnimation, value: appearance)
-            .animation(dragState.isActive ? nil : .springyAnimation, value: dragState)
+            .animation(.springy, value: dragState.isActive) // Appearance change
+            .animation(dragState.isActive ? nil : .springy, value: dragState)
             .onAppear { appendToModels(viewModel) }
             .onDisappear { removeFromModels(viewModel) }
-            .saveBounds(in: $viewModel.frame, coordinateSpace: scrollViewContentCoordinateSpace)
+            .saveFrame(in: $viewModel.frame, coordinateSpace: scrollViewContentCoordinateSpace)
             .afterTapGesture(add: canDrag ? pressToDrag : nil)
             
     }
@@ -101,18 +104,27 @@ struct CellDisplayer: View, Identifiable {
                 menuItems
                 Divider()
             }
-            Button("Edit") {
-                withDelay(0.75) { // TODO: ADD SETTING/CUSTOM BUTTON FOR DELAY TIME
-                    let activate = onActivate ?? { editState in editState.activate() }
-                    activate(editMode)
-                }
+            ContextMenuButton(
+                label: Text("Edit"),
+                image: editListIcon) {
+                let activate = onActivate ?? { editState in editState.activate() }
+                activate(editMode)
             }
         }
     }
     
-    private var canDrag: Bool {
-        return editMode.isActive
+    private var editListSymbolConfig: UIImage.SymbolConfiguration {
+        .init(pointSize: 24.0, weight: .regular, scale: .medium)
     }
+    
+    private var editListIcon: Image {
+        .init(uiImage: UIImage(
+                named: "editable.vertical.list",
+                in: .module,
+                with: editListSymbolConfig)!.withRenderingMode(.alwaysTemplate))
+    }
+    
+    private var canDrag: Bool { editMode.isActive && !configuration.isHeader }
     
     private var dragOffset: CGFloat {
         guard let initialContentOffset = viewModel.cellDrag?.contentOffset else { return 0 }
@@ -175,10 +187,14 @@ struct CellDisplayer: View, Identifiable {
         }
     }
     
-    var borderShadow: some View {
-        Color.white
-            .clipShape(appearance.clipShape)
-            .shadow(color: Color.black.opacity(0.5), radius: shadowRadius)
+    @ViewBuilder var editingBackground: some View {
+        if editMode.isActive {
+            configuration.editingBackground
+                .zIndex(1.0)
+                .transition(.opacity)
+                .clipShape(appearance.clipShape)
+                .shadow(color: Color.black.opacity(0.5), radius: shadowRadius)
+        }
     }
     
     var canJiggle: Bool { editMode.isActive && !dragState.isActive }
@@ -199,13 +215,13 @@ struct CellDisplayer: View, Identifiable {
     
     func startCellDragging() {
         viewModel.isDragging = true
-        withAnimation(.snappyAnimation) { shadowRadius = configuration.shadowRadius ?? 0 }
+        withAnimation(.fastInout) { shadowRadius = configuration.shadowRadius ?? 0 }
     }
     
     func stopCellDragging() {
         viewModel.isDragging = false
         viewModel.cellDrag = nil
-        withAnimation(.snappyAnimation) { shadowRadius = 0 }
+        withAnimation(.fastInout) { shadowRadius = 0 }
     }
     
     func toggleJiggleEffect(canJigle: Bool) {
