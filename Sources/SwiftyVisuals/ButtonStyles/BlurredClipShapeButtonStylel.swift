@@ -132,7 +132,7 @@ public struct BlurredCircleButtonStyle: BlurredClipShapeButtonStyleProtocol, Twi
 struct BlurredCapsuleButtonStyle_Previews: PreviewProvider {
     static var previews: some View {
         
-        Background {
+//        Background {
             VStack(spacing: 50) {
                 Button("Capsule") { }
                     .buttonStyle(BlurredCapsuleButtonStyle())
@@ -149,7 +149,7 @@ struct BlurredCapsuleButtonStyle_Previews: PreviewProvider {
                 Button { } label : { Image(systemName: "minus") }
                     .buttonStyle(BlurredCircleButtonStyle(padding: .init(equal: 13)))
             }
-        }
+//        }
     }
 }
 

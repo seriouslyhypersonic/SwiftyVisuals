@@ -25,3 +25,13 @@ public extension LinearGradient {
             endPoint: .topTrailing)
     }
 }
+
+public extension RadialGradient {
+    static var nightGradient:  RadialGradient {
+        .init(gradient: Gradient(colors: [.blueDark, .blueDarkDarkDark, .blueBlack]), center: .bottom, startRadius: 0, endRadius: Screen.heigth)
+    }
+    
+    static var darkNightGradient:  RadialGradient {
+        .init(gradient: Gradient(colors: [.blueDarkDark, .blueBlack, .black]), center: .bottom, startRadius: 0, endRadius: Screen.heigth)
+    }
+}

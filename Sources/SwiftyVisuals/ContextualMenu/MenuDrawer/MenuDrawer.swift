@@ -95,7 +95,7 @@ struct MenuDrawer_Previews: PreviewProvider {
     @State static private var isLarge = false
     
     static var previews: some View {
-        Background {
+//        Background {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 25) {
                     widget
@@ -105,7 +105,7 @@ struct MenuDrawer_Previews: PreviewProvider {
                     widget
                 }
             }
-        }
+//        }
     }
     
     static var widget: some View {
@@ -116,6 +116,7 @@ struct MenuDrawer_Previews: PreviewProvider {
             .background(Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 25))
             .padding(.horizontal)
+            .shadow(radius: 5)
             .menuDrawer {
                 MenuButton(
                     text: "Share",

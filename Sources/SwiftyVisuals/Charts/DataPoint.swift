@@ -8,9 +8,9 @@
 import SwiftUI
 
 public struct DataPoint {
-    var x: CGFloat
-    var y: CGFloat
-    var label: AnyView?
+    public var x: CGFloat
+    public var y: CGFloat
+    public var label: AnyView?
 }
 
 public extension DataPoint {

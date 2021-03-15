@@ -17,6 +17,15 @@ public extension Animation {
         )
     }
     
+    static var bouncySpring: Self {
+        interpolatingSpring(
+            mass: 0.6,
+            stiffness: 150,
+            damping: 8,
+            initialVelocity: 15
+        )
+    }
+    
     static var springyContraction: Self {
         .interpolatingSpring(stiffness: 50, damping: 9, initialVelocity: -100)
     }

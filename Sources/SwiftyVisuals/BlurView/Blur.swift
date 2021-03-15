@@ -24,18 +24,18 @@ public struct Blur: UIViewRepresentable {
 
 struct BlurView_Previews: PreviewProvider {
     static var previews: some View {
-        Background() {
+//        Background() {
             ZStack {
                 Text(loremIpsum)
                     .font(Font.title.bold())
-                    .foregroundColor(.white)
+//                    .foregroundColor(.white)
                 
                 Blur(style: .systemUltraThinMaterial)
                     .frame(height: 375)
                     .cornerRadius(25)
             }
             .padding(.horizontal, 25)
-        }
+//        }
     }
     
     static let loremIpsum =

@@ -37,7 +37,7 @@ struct CellDisplayer: View, Identifiable, ContextMenuProvider {
     @EnvironmentObject var editMode: ListEditMode
     
     @StateObject var viewModel = ViewModel()
-    @GestureState private var dragState: DragState = .inactive
+    @GestureState private var dragState: LongPressThenDragState = .inactive
     @Binding var models: [ViewModel]
     @State private var zIndex: Double = 0
     @State private var shadowRadius: CGFloat = 0 // Change shadowRadius with non-springy animation
@@ -200,7 +200,7 @@ struct CellDisplayer: View, Identifiable, ContextMenuProvider {
     var canJiggle: Bool { editMode.isActive && !dragState.isActive }
     
     // Update the zIndex immediated to 1 when dragging and to 0 only after the cell snaps into place
-    func updateZIndex(dragState: DragState) {
+    func updateZIndex(dragState: LongPressThenDragState) {
         dragState.isActive ? zIndex = 1 : withDelay(0.75) { zIndex = 0 }
     }
     

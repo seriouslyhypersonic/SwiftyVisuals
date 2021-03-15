@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension View {
+public extension View {
     /// Return a type-erased version of the curren view
     func eraseToAnyView() -> AnyView {
         AnyView(self)

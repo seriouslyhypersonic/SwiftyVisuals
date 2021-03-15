@@ -12,7 +12,7 @@ public struct Background<BackgroundView: View, ForegroundView: View>: View {
     let background: () -> BackgroundView
     let foreground: () -> ForegroundView
     
-    public init(_ background: @escaping () -> BackgroundView, foreground: @escaping () -> ForegroundView ) {
+    public init(@ViewBuilder _ background: @escaping () -> BackgroundView, @ViewBuilder foreground: @escaping () -> ForegroundView ) {
         self.background = background
         self.foreground = foreground
     }
@@ -34,12 +34,14 @@ public extension Background where BackgroundView == AnyView {
     
     /// A set of ready-to-use background views
     enum BackgroundFill {
-        case purpleGreenGradient, blueGradient
+        case purpleGreenGradient, blueGradient, nightGradient, darkNightGradient
         
         func view() -> AnyView {
             switch self {
             case .purpleGreenGradient: return LinearGradient.purpleToGreenDiagonally.eraseToAnyView()
             case .blueGradient: return LinearGradient.blueGradient.eraseToAnyView()
+            case .nightGradient: return RadialGradient.nightGradient.eraseToAnyView()
+            case .darkNightGradient: return RadialGradient.darkNightGradient.eraseToAnyView()
             }
         }
     }
@@ -48,6 +50,10 @@ public extension Background where BackgroundView == AnyView {
 struct Background_Previews: PreviewProvider {
     static var previews: some View {
         Background() { EmptyView() }
+        
+        Background(fill: .nightGradient) { EmptyView() }
+        
+        Background(fill: .darkNightGradient) { EmptyView() }
         
         Background { Color.cyan } foreground: { EmptyView() }
     }

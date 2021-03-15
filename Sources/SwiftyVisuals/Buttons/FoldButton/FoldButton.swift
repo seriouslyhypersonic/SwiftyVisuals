@@ -37,14 +37,14 @@ public struct FoldButton: View {
 
 struct FoldButton_Previews: PreviewProvider {
     static var previews: some View {
-        Background {
+//        Background {
             VStack(spacing: 25) {
                 StatefulPreview(false) { FoldButton(isFolded: $0) }
                 
                 StatefulPreview(false) { FoldButton(isFolded: $0, label: RotationFoldLabel()) }
-            }
+//            }
             .animation(.slowInOut)
-            .foregroundColor(.white)
+//            .foregroundColor(.white)
         }
     }
 }

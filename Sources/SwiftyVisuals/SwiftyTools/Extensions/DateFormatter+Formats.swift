@@ -8,7 +8,7 @@
 import Foundation
 
 public extension DateFormatter {
-    /// No time date formatter: `yyyy-MM-dd`
+    /// A date formatter that prints the weekday followed by the day of the month and month
     static let fullDateWithouYear: DateFormatter = {
         let template = "EEEEdMMMM"
         let format = DateFormatter.dateFormat(fromTemplate: template, options: 0, locale: .current)
@@ -26,5 +26,15 @@ public extension DateFormatter {
         formater.doesRelativeDateFormatting = true
         
         return formater
+    }()
+    
+    /// A date formatter that prints the weekday and the day of the month
+    static let weeekDayMonthDay: DateFormatter = {
+        let template = "EEE, d"
+        let format = DateFormatter.dateFormat(fromTemplate: template, options: 0, locale: .current)
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        
+        return formatter
     }()
 }

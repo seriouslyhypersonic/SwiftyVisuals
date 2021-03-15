@@ -76,16 +76,16 @@ fileprivate struct HUDPreviewContainer: View {
     @State private var isPresented = true
     
     var body: some View {
-        Background {
+//        Background {
             VStack {
                 HStack {
                     hud
                     hud.colorScheme(.dark)
                 }
                 Spacer()
-                Button("Toggle HUD") { isPresented.toggle() }.foregroundColor(.white)
+                Button("Toggle HUD") { isPresented.toggle() }
             }
-        }
+//        }
     }
     
     var hud: some View {
