@@ -73,7 +73,7 @@ public extension ListView {
     }
     
     func editButton<Label: View, Style: ButtonStyle>(
-        alignment: AlignmentGuide = .topLeading,
+        alignment: Alignment = .topLeading,
         style: Style? = nil,
         transition: AnyTransition? = nil,
         @ViewBuilder label: @escaping () -> Label ) -> Self
@@ -98,7 +98,7 @@ public extension ListView {
             .modify(\.editButtonConfiguration.yOffset, value: y)
     }
     
-    func editButton(alignment: AlignmentGuide) -> Self {
+    func editButton(alignment: Alignment) -> Self {
         modify(\.editButtonConfiguration.alignmentGuide, value: alignment)
     }
     
@@ -118,7 +118,7 @@ public extension ListView {
     // MARK: - Delete Button
     
     func deleteButton<Label: View, S: ButtonStyle>(
-        alignment: AlignmentGuide = .topLeading,
+        alignment: Alignment = .topLeading,
         style: S? = nil,
         transition: AnyTransition? = nil,
         @ViewBuilder label: @escaping () -> Label) -> Self
@@ -141,7 +141,7 @@ public extension ListView {
     func deleteButton<Style: ButtonStyle>(
         symbol: DeleteButtonLabel.DeleteSymbol,
         font: Font = .title2,
-        alignment: AlignmentGuide = .topLeading,
+        alignment: Alignment = .topLeading,
         style: Style? = nil,
         transition: AnyTransition? = nil) -> Self
     {
@@ -155,7 +155,7 @@ public extension ListView {
             .modify(\.cellDisplayerConfiguration.deleteButtonConfiguration.yOffset, value: y)
     }
     
-    func deleteButton(alignment: AlignmentGuide) -> Self {
+    func deleteButton(alignment: Alignment) -> Self {
         modify(\.cellDisplayerConfiguration.deleteButtonConfiguration.alignmentGuide, value: alignment)
     }
     

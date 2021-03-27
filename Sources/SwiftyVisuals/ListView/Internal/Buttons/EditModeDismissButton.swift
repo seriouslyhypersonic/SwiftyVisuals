@@ -54,7 +54,7 @@ extension EditModeDismissButton {
         var transition: AnyTransition = AnyTransition.scale.combined(with: AnyTransition.opacity)
         var xOffset: CGFloat = 0
         var yOffset: CGFloat = 0
-        var alignmentGuide: AlignmentGuide = .topTrailing
+        var alignmentGuide: Alignment = .topTrailing
     }
 }
 

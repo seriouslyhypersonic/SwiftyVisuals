@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Banner.swift
 //  
 //
 //  Created by Nuno Alves de Sousa on 25/02/2021.
@@ -7,8 +7,10 @@
 
 import SwiftUI
 
+// A container view that presents its contents from an edge of the screen
 struct Banner<BannerContent: View>: ViewModifier {
-    var isPresented: Bool
+    @Binding var isPresented: Bool
+    @State private var isShowing: Bool
     let edge: Edge
     let content: () -> BannerContent
     
@@ -16,24 +18,29 @@ struct Banner<BannerContent: View>: ViewModifier {
         content.overlay(bannerView.align(alignment))
     }
     
-    init(isPresented: Bool, edge: Edge, content: @escaping () -> BannerContent) {
-        self.isPresented = isPresented
+    init(isPresented: Binding<Bool>, edge: Edge, content: @escaping () -> BannerContent) {
+        self._isPresented = isPresented
+        self._isShowing = State(wrappedValue: isPresented.wrappedValue)
         self.edge = edge
         self.content = content
     }
     
     var bannerView: some View {
         ZStack {
-            if isPresented {
+            if isShowing {
                 content()
                     .transition(AnyTransition.move(edge: edge).combined(with: .opacity))
                     .zIndex(1.0)
             }
         }
-        .animation(.mediumInOut, value: isPresented)
+        .onChange(of: isPresented) { _ in
+            withAnimation(.mediumInOut) {
+                isShowing = isPresented
+            }
+        }
     }
     
-    var alignment: AlignmentGuide {
+    var alignment: Alignment {
         switch edge {
         case .top: return .top
         case .bottom: return .bottom

@@ -43,9 +43,12 @@ struct TrailingView: ViewModifier {
     }
 }
 
-public enum AlignmentGuide {
-    case top, bottom
-    case leading, trailing
-    case topLeading, topTrailing
-    case bottomLeading, bottomTrailing
+struct CenterView: ViewModifier {
+    func body(content: Content) -> some View {
+        HStack(spacing: 0) {
+            Spacer()
+            content
+            Spacer()
+        }
+    }
 }

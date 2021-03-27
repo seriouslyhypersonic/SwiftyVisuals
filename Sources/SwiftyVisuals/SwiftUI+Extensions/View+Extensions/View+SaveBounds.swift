@@ -43,4 +43,22 @@ public extension View {
                 }
             )
     }
+    
+    /// Check if the frame of the current view is vertically or horizontally within the limits of the device's screen
+    func frame(isVisible: Binding<Bool>, axis: Axis = .vertical) -> some View {
+        self.background(
+            GeometryReader { geo in
+                Color.clear.onChange(of: geo.frame(in: .global)) { frame in
+                    switch axis {
+                    case .vertical:
+                        isVisible.wrappedValue = frame.maxY.isBetween(min: 0, max: Screen.heigth) ||
+                            frame.minY.isBetween(min: 0, max: Screen.heigth)
+                    case .horizontal:
+                        isVisible.wrappedValue = frame.minX.isBetween(min: 0, max: Screen.width) ||
+                            frame.maxX.isBetween(min: 0, max: Screen.width)
+                    }
+                }
+            }
+        )
+    }
 }

@@ -12,7 +12,7 @@ public extension View {
     /// - Parameter alignment: the alignment guide used to position the child inside its parent view
     /// - Returns: the child view embbeded in a `HStack` and/or `VStack` according to the alignment guide.
     /// - Note: The child view is positioned using the available space of the parent view
-    @ViewBuilder func align(_ alignment: AlignmentGuide) -> some View {
+    @ViewBuilder func align(_ alignment: Alignment) -> some View {
         switch alignment {
         case .top:
             self.modifier(TopView())
@@ -30,6 +30,9 @@ public extension View {
             self.modifier(BottomView()).modifier(LeadingView())
         case .bottomTrailing:
             self.modifier(BottomView()).modifier(TrailingView())
+        case .center:
+            self.modifier(CenterView())
+        default: fatalError("align: unsuported alignment \(alignment)")
         }
     }
 }
