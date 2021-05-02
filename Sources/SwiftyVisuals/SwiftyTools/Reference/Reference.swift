@@ -7,8 +7,16 @@
 
 import Foundation
 
-/// A protocol that describes a reference type to a certain value
-public protocol Reference: class {
-    associatedtype Value
-    var value: Value { get }
+///// A protocol that describes a reference type to a certain value
+//public protocol Reference: class {
+//    associatedtype Value
+//    var value: Value { get }
+//}
+
+final class Reference<Value> {
+    public var wrappedValue: Value
+    
+    public init(_ wrappedValue: Value) {
+        self.wrappedValue = wrappedValue
+    }
 }

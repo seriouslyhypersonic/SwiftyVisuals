@@ -13,7 +13,7 @@ extension Array: MenuItemConvertible where Element == ContextualMenu.MenuItem {
 
 public extension ContextualMenu {
     /// A custom parameter attribute that constructs an array of  `MenuItem`s from closures
-    @_functionBuilder
+    @resultBuilder
     struct MenuItemsBuilder {
         static func buildBlock() -> [ContextualMenu.MenuItem] { [] }
         
@@ -36,7 +36,7 @@ public extension ContextualMenu {
 }
 
 /// A custom parameter attribute that constructs a  `ContextualMenu` from closures
-@_functionBuilder
+@resultBuilder
 public struct MenuBuilder {
     static public func buildBlock() -> ContextualMenu { ContextualMenu(items: []) }
     

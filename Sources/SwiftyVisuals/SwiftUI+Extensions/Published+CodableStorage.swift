@@ -16,7 +16,8 @@ public extension Published where Value: Codable {
         
         if
             let data = _store.data(forKey: key),
-            let value = try? JSONDecoder().decode(Value.self, from: data) {
+            let value = try? JSONDecoder().decode(Value.self, from: data)
+        {
             self.init(initialValue: value)
         } else {
             self.init(initialValue: defaultValue)

@@ -22,7 +22,7 @@ extension ForEach: PickerItemConvertible where Content: PickerItemConvertible {
 }
 
 /// A custom parameter attribute that constructs an array of `PickerItem`s from closures
-@_functionBuilder
+@resultBuilder
 public struct PickerBuilder {
     static public func buildBlock() -> [PickerItemConvertible] { [] }
     

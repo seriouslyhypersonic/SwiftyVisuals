@@ -2,14 +2,19 @@ import XCTest
 @testable import SwiftyVisuals
 
 final class SwiftyVisualsTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(SwiftyVisuals().text, "Hello, World!")
+    func referenceTest() {
+        let original = Reference(["Audi", "Mercedes"])
+        var copy = Reference(["Alfa Romeo"])
+        
+        XCTAssertNotEqual(original.wrappedValue, copy.wrappedValue)
+        
+        copy = original
+        copy.wrappedValue.append("Porsche")
+        
+        XCTAssertEqual(original.wrappedValue, copy.wrappedValue)
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("referenceTest", referenceTest),
     ]
 }
