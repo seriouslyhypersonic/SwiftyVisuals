@@ -7,66 +7,55 @@
 
 import SwiftUI
 
+/// A view that is a configurable source of a particle system
 public struct Emitter: View {
-    private struct Particle: View {
-        @Environment(\.scenePhase) private var scenePhase
-        @State private var isActive = false
-        
-        let particle: AnyView
-        let position: ParticleState<CGPoint>
-        let opacity: ParticleState<Double>
-        let rotation: ParticleState<Angle>
-        let scale: ParticleState<CGFloat>
-        
-        var body: some View {
-            particle
-                .opacity(isActive ? opacity.end : opacity.start)
-                .scaleEffect(isActive ? scale.end : scale.start)
-                .rotationEffect(isActive ? rotation.end : rotation.start)
-                .position(isActive ? position.end : position.start)
-                .onAppear { self.isActive = true }
-        }
-    }
-    
-    private struct ParticleState<T> {
-        var start: T
-        var end: T
-    }
-    
     var particles: [AnyView]
     var particleCount: Int
-    
     var configuration = Configuration()
     
+    @State private var particleViews: [Particle] = []
+    
     public var body: some View {
-        GeometryReader { geo in
+        GeometryReader { geometry in
             ZStack {
-                ForEach(0..<particleCount, id: \.self) { index in
-                    Particle(
-                        particle: particles.randomElement()!,
-                        position: position(in: geo),
-                        opacity: makeOpacity(),
-                        rotation: makeRotation(),
-                        scale: makeScale()
-                    )
-                    .animation(configuration.animation.delay(.random(in: 0...configuration.animationDelayThreshold)))
+                ForEach(particleViews) { particle in
+                    particle
                     .colorMultiply(configuration.colors.randomElement() ?? .white)
                     .blendMode(configuration.blendMode)
                 }
             }
-            .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
+            .onAppear { generateParticles(size: geometry.size) }
+            .if(configuration.updateOnSizeChange) {
+                $0.onChange(of: geometry.size, perform: generateParticles)
+            }
+            
         }
     }
     
-    private func position(in proxy: GeometryProxy) -> ParticleState<CGPoint> {
+    private func generateParticles(size: CGSize) {
+        particleViews = (0..<particleCount).map { _ in
+            Particle(
+                particle: particles.randomElement()!,
+                position: position(size: size),
+                opacity: makeOpacity(),
+                rotation: makeRotation(),
+                scale: makeScale(),
+                animation: configuration.animation
+                    .delay(.random(in: 0...configuration.animationDelayThreshold))
+            )
+        }
+    }
+    
+    private func position(size: CGSize) -> ParticleState<CGPoint> {
         let halfCreationRangeWidth = configuration.creationRange.width / 2
         let halfCreationRangeHeight = configuration.creationRange.height / 2
         
         let creationOffsetX = CGFloat.random(in: -halfCreationRangeWidth...halfCreationRangeWidth)
         let creationOffsetY = CGFloat.random(in: -halfCreationRangeHeight...halfCreationRangeHeight)
         
-        let startX = Double(proxy.size.width * (configuration.creationPoint.x + creationOffsetX))
-        let startY = Double(proxy.size.height * (configuration.creationPoint.y + creationOffsetY))
+        let startX = Double(size.width * (configuration.creationPoint.x + creationOffsetX))
+        let startY = Double(size.height * (configuration.creationPoint.y + creationOffsetY))
         let start = CGPoint(x: startX, y: startY)
         
         let halfSpeedRange = configuration.speedRange / 2
