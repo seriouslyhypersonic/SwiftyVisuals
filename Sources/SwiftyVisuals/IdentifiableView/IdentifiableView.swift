@@ -8,7 +8,11 @@
 import SwiftUI
 
 /// A type-erased identifiable view
-public struct IdentifiableView: View, Identifiable {
+public struct IdentifiableView: View, Identifiable, Equatable {
+    public static func == (lhs: IdentifiableView, rhs: IdentifiableView) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     public let id: AnyHashable
     let content: AnyView
     

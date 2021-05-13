@@ -18,28 +18,29 @@ protocol BlurredClipShapeButtonStyleProtocol: ButtonStyle {
 }
 
 // The implementation for the button styling
-fileprivate func clipAndBlur<Label: View, ClipShape: Shape>(
+func styleButton<Label: View, Background: View, ClipShape: Shape>(
     configuration: ButtonStyleConfiguration,
     label: Label,
     padding: Padding,
-    style: UIBlurEffect.Style,
+    background: Background,
     clipShape: ClipShape) -> some View
 {
     label
         .foregroundColor(Color.primary.opacity(0.65))
         .padding(padding)
-        .background(Blur(style: style))
+        .background(background)
         .overlay(Color.primary.opacity(configuration.isPressed ? 0.5 : 0))
         .clipShape(clipShape)
+        .contentShape(clipShape)
 }
 
 extension BlurredClipShapeButtonStyleProtocol {
     public func makeBody(configuration: ButtonStyleConfiguration) -> some View {
-        clipAndBlur(
+        styleButton(
             configuration: configuration,
             label: configuration.label,
             padding: padding,
-            style: style,
+            background: Blur(style: style),
             clipShape: clipShape)
     }
 }
@@ -119,11 +120,11 @@ public struct BlurredCircleButtonStyle: BlurredClipShapeButtonStyleProtocol, Twi
     
     public func makeBody(configuration: Configuration) -> some View {
         twist(
-            label: clipAndBlur(
+            label: styleButton(
                 configuration: configuration,
                 label: configuration.label,
                 padding: padding,
-                style: style,
+                background: Blur(style: style),
                 clipShape: clipShape),
             with: configuration)
     }

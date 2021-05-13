@@ -7,10 +7,18 @@
 
 import SwiftUI
 
-struct ShadedButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
+public struct ShadedButtonStyle: ButtonStyle {
+    let color: Color
+    let opacity: Double
+    
+    public init(color: Color = .primary, opacity: Double = 0.1) {
+        self.color = color
+        self.opacity = opacity
+    }
+    
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .background(Color.primary.opacity(configuration.isPressed ? 0.10 : 0))
+            .background(color.opacity(configuration.isPressed ? opacity : 0))
             .contentShape(Rectangle())
     }
 }
